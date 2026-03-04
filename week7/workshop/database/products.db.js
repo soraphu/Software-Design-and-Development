@@ -23,7 +23,7 @@ class ProductDatabase {
                     productData.stock,
                     productData.description || ''
                 ],
-                function(err) {
+                function (err) {
                     if (err) {
                         reject(err);
                     } else {
@@ -83,7 +83,7 @@ class ProductDatabase {
             });
         });
     }
-    
+
     // ===== UPDATE =====
     // ⚠️ นักศึกษาเติมโค้ดทั้งหมด
     static update(id, productData) {
@@ -97,7 +97,7 @@ class ProductDatabase {
             description = ?
             WHERE id = ?
         `;
-        
+
         return new Promise((resolve, reject) => {
             // TODO: เติมโค้ด db.run
             db.run(
@@ -110,11 +110,11 @@ class ProductDatabase {
                     productData.description,
                     id
                 ],
-                function(err) {
+                function (err) {
                     if (err) {
-                        reject(err) ;
+                        reject(err);
                     } else {
-                        resolve({ changes: this.changes }) ;
+                        resolve({ changes: this.changes });
                     }
                 }
             )
@@ -129,15 +129,15 @@ class ProductDatabase {
             DELETE FROM product 
             WHERE id = ?
         `
-        return new Promise( (resolve, reject) => {
-            db.run( sql, [id], function(err) {
-                    if (err) {
-                        reject(err) ;
-                    } else {
-                        resolve({ changes: this.changes }) ;
-                    } ;
-            } ) ;
-        } ) ;
+        return new Promise((resolve, reject) => {
+            db.run(sql, [id], function (err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve({ changes: this.changes });
+                };
+            });
+        });
     }
 
     // ===== SEARCH =====

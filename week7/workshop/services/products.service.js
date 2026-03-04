@@ -3,7 +3,7 @@
 // ============================================
 
 const ProductDB = require('../database/products');
-const { search } = require('../database/products.db');
+const { search } = require('../database/products.db.js');
 
 class ProductService {
     // ===== GET ALL =====
@@ -22,7 +22,7 @@ class ProductService {
     static async getProductById(id) {
         try {
             const product = await ProductDB.findById(id);
-            
+
             if (!product) {
                 throw new Error('Product not found');
             }
@@ -39,11 +39,11 @@ class ProductService {
         try {
             // TODO: Validate required fields
             // name, category_id, price, stock ต้องมีค่า
-            
+
             // TODO: Validate price > 0
             // TODO: Validate stock >= 0
-            this.validateProductData( productData ) ;
-            
+            this.validateProductData(productData);
+
             // Create product
             const newProduct = await ProductDB.create(productData);
             return newProduct;
@@ -57,16 +57,16 @@ class ProductService {
     static async updateProduct(id, productData) {
         try {
             // TODO: 1. ตรวจสอบว่า product มีอยู่จริง
-            this.searchProducts( id ) ;
+            this.searchProducts(id);
 
             // TODO: 2. Validate ข้อมูล
-            this.validateProductData( productData ) ;
-            
+            this.validateProductData(productData);
+
             // TODO: 3. Update
-            await ProductDB.update( id, productData ) ;
-            
+            await ProductDB.update(id, productData);
+
             // TODO: 4. Return product ที่ update แล้ว
-            return this.searchProducts( id ) ;
+            return this.searchProducts(id);
 
         } catch (error) {
             throw error;
@@ -78,8 +78,8 @@ class ProductService {
     static async deleteProduct(id) {
         try {
             // TODO: เขียนโค้ดลบ product
-            ProductDB.delete( id ) ;
-            return `Delete id: ${id} successful` ;
+            ProductDB.delete(id);
+            return `Delete id: ${id} successful`;
         } catch (error) {
             throw error;
         }

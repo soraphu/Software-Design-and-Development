@@ -28,7 +28,7 @@ async function readProducts() {
 async function writeProducts(products) {
     try {
         await fs.writeFile(
-            dataPath, 
+            dataPath,
             JSON.stringify(products, null, 2),
             'utf8'
         );
@@ -44,7 +44,6 @@ async function writeProducts(products) {
 router.get('/', async (req, res) => {
     try {
         const products = await readProducts();
-        
         res.json({
             success: true,
             count: products.length,
@@ -64,17 +63,17 @@ router.get('/:id', async (req, res) => {
     try {
         const products = await readProducts();
         const id = parseInt(req.params.id);
-        
+
         // TODO: ค้นหา product ที่มี id ตรงกับที่ส่งมา
-        const product = products[id-1] ;
-        
+        const product = products[id - 1];
+
         if (!product) {
             return res.status(404).json({
                 success: false,
                 error: 'Product not found'
             });
         }
-        
+
         res.json({
             success: true,
             data: product
@@ -93,21 +92,21 @@ router.post('/', async (req, res) => {
     try {
         const products = await readProducts();
         const { name, category, price, stock, description } = req.body;
-        
+
         // TODO: 1. Validate ข้อมูล (ตรวจสอบว่ามีครบหรือไม่)
-        if (!name || !category || price === undefined || stock === undefined, !description ) {
+        if (!name || !category || price === undefined || stock === undefined, !description) {
             return res.status(400).json({
                 success: false,
                 error: 'Missing required fields'
             });
         }//if: validation
-        
+
         // TODO: 2. สร้าง id ใหม่ (หา max id + 1)`
-        const maxId = products.length > 0 
-            ? Math.max(...products.map(p => p.id)) 
+        const maxId = products.length > 0
+            ? Math.max(...products.map(p => p.id))
             : 0;
         const newId = maxId + 1;
-        
+
         // TODO: 3. สร้าง product object ใหม่
         const newProduct = {
             id: newId,
@@ -117,18 +116,18 @@ router.post('/', async (req, res) => {
             stock: stock,
             description: description
         };
-        
+
         // TODO: 4. เพิ่มเข้า array
-        products.push( newProduct ) ;
+        products.push(newProduct);
         await writeProducts(products);
 
         // TODO: 5. บันทึกลงไฟล์
         await fs.writeFile(
-            dataPath, 
+            dataPath,
             JSON.stringify(products, null, 2),
             'utf8'
         );
-        
+
         res.status(201).json({
             success: true,
             message: 'Product created successfully',
@@ -149,18 +148,18 @@ router.put('/:id', async (req, res) => {
         const products = await readProducts();
         const id = parseInt(req.params.id);
         const { name, category, price, stock, description } = req.body;
-        
+
         // TODO: 1. หา index ของ product ที่ต้องการแก้ไข
-        const productIndex = products.findIndex( e => e.id === id ) ;
+        const productIndex = products.findIndex(e => e.id === id);
 
         // TODO: 2. ตรวจสอบว่าเจอหรือไม่
-        if( !products[productIndex] ) {
+        if (!products[productIndex]) {
             return res.status(400).json({
                 success: false,
                 error: 'Product id not found'
             });
         }//if: 
-        
+
         // TODO: 3. อัปเดตข้อมูล
         products[productIndex] = {
             id,
@@ -170,14 +169,14 @@ router.put('/:id', async (req, res) => {
             stock: parseInt(stock),
             description: description || products[productIndex].description
         };
-        
+
         // TODO: 4. บันทึกลงไฟล์
         await fs.writeFile(
-            dataPath, 
+            dataPath,
             JSON.stringify(products, null, 2),
             'utf8'
         );
-        
+
         res.json({
             success: true,
             message: 'Product updated successfully',
@@ -196,22 +195,22 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         const products = await readProducts();
-        const id = parseInt(req.params.id);        
+        const id = parseInt(req.params.id);
         // TODO: เขียนโค้ดลบ product
-        const productIndex = products.findIndex( e => e.id === id ) ;
+        const productIndex = products.findIndex(e => e.id === id);
 
-        if( !products[productIndex] ) {
+        if (!products[productIndex]) {
             res.json({
                 success: false,
                 message: 'Product id not found'
             });
         }
 
-        products.splice( productIndex, 1 ) ;
+        products.splice(productIndex, 1);
 
         // TODO: 4. บันทึกลงไฟล์
         await fs.writeFile(
-            dataPath, 
+            dataPath,
             JSON.stringify(products, null, 2),
             'utf8'
         );

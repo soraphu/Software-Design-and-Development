@@ -40,57 +40,57 @@ class ProductController {
             // ถ้า "not found" → 404
             // อื่นๆ → 500
             if (err.name === 'Not Found') {
-                return res.status(404).json({ 
+                return res.status(404).json({
                     success: false,
-                    error: '404 ไม่พบข้อมูล' 
+                    error: '404 ไม่พบข้อมูล'
                 });
             } else {
-                return res.status(500).json({ 
+                return res.status(500).json({
                     success: false,
-                    error: `500 ${error.message}` 
-                }) ;
+                    error: `500 ${error.message}`
+                });
             }//ifelse
         }
     }
-    
+
     // ===== CREATE =====
     // ⚠️ นักศึกษาเติมโค้ด
     static async createProduct(req, res) {
         try {
-            const productData = req.body ;
+            const productData = req.body;
             // Validate using helper method
             await ProductService.validateProductData(productData);
-            
+
             // Create product
             const newProduct = await ProductService.createProduct(productData);
-            return newProduct ;
+            return newProduct;
         } catch (error) {
             throw new Error(`Failed to create product: ${error.message}`);
         }
     }
-    
+
     // ===== UPDATE =====
     // ⚠️ นักศึกษาเติมโค้ดทั้งหมด
     static async updateProduct(req, res) {
         try {
-            const { id } = req.params ;
-            const data = req.body ;
+            const { id } = req.params;
+            const data = req.body;
             // TODO: เขียนโค้ดทั้งหมด
-            ProductDB.update(  ) ;
+            ProductDB.update();
         } catch (error) {
             // TODO: Error handling
             throw new Error(`Failed to update product: ${error.message}`);
         }
     }
-    
+
     // ===== DELETE =====
     // ⚠️ นักศึกษาเติมโค้ดทั้งหมด
     static async deleteProduct(req, res) {
         try {
-            const id = req.params ;
+            const id = req.params;
             // TODO: เขียนโค้ดทั้งหมด
-            ProductService.deleteProduct( id ) ;
-            return "Product deleted" ;
+            ProductService.deleteProduct(id);
+            return "Product deleted";
         } catch (error) {
             // TODO: Error handling
             throw new Error(`Failed to delete product: ${error.message}`);
